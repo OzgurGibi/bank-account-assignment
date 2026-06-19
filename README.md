@@ -1,4 +1,4 @@
-# Walkthrough - SwedBank Banking System
+# Banking System
 
 The project consists of a Java Spring Boot REST API (Backend) and an Angular SPA (Frontend).
 Local folder is `C:\Projects\SwedBank\bank-app`.
