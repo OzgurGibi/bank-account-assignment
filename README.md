@@ -1,6 +1,7 @@
 # Banking System
 
 The project consists of a Java Spring Boot REST API (Backend) and an Angular SPA (Frontend).
+
 Local folder is `C:\Projects\SwedBank\bank-app`.
 
 ---
@@ -15,8 +16,9 @@ To run the application locally, two terminals are needed.
 cd C:\Projects\SwedBank\bank-app\backend
 .\mvnw spring-boot:run
 ```
-- API (`http://localhost:8080`).
-- H2 Database `http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:mem:bankdb`, Username: `sa`, Password: ``).
+- API `http://localhost:8080`.
+- H2 Database `http://localhost:8080/h2-console`
+  (JDBC URL: `jdbc:h2:mem:bankdb`, Username: `sa`, Password: ``).
 
 ### 2. Frontend (Angular SPA)
 
@@ -24,7 +26,7 @@ cd C:\Projects\SwedBank\bank-app\backend
 cd C:\Projects\SwedBank\bank-app\frontend
 npm start
 ```
-- UI (`http://localhost:4200`).
+- UI `http://localhost:4200`.
 
 ---
 
