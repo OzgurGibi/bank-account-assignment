@@ -1,0 +1,93 @@
+<div class="receipt-container">
+  <!-- Back Button -->
+  <nav class="top-nav animate-fade">
+    <button class="back-btn" (click)="goBack()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+      Back to Account
+    </button>
+  </nav>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-banner animate-fade">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+    <span>{{ error }}</span>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Loading transaction details...</p>
+  </div>
+
+  <!-- Receipt Content -->
+  <div *ngIf="!loading && transaction && account" class="receipt-wrapper animate-fade">
+    <div class="receipt-card glass-panel">
+      <!-- Receipt Header -->
+      <div class="receipt-header">
+        <div class="status-badge">
+          <span class="status-dot"></span>
+          Success
+        </div>
+        <div class="icon-wrapper" [ngClass]="getTransactionIconClass(transaction.type)">
+          <!-- Deposit / Up -->
+          <svg *ngIf="transaction.type === 'DEPOSIT'" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
+          <!-- Debit / Down -->
+          <svg *ngIf="transaction.type === 'DEBIT'" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+          <!-- Transfer -->
+          <svg *ngIf="transaction.type === 'EXCHANGE_OUT' || transaction.type === 'EXCHANGE_IN'" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.82 2.82 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"></path></svg>
+        </div>
+        <h2 class="receipt-title">{{ getTransactionLabel(transaction.type) }}</h2>
+        <div class="receipt-amount" [ngClass]="{'tx-plus': transaction.type === 'DEPOSIT' || transaction.type === 'EXCHANGE_IN', 'tx-minus': transaction.type === 'DEBIT' || transaction.type === 'EXCHANGE_OUT'}">
+          {{ getTransactionAmountSign(transaction.type) }}{{ getCurrencySymbol(transaction.currency) }}{{ transaction.amount | number:'1.2-2' }}
+        </div>
+      </div>
+
+      <!-- Dashed Separator -->
+      <div class="dashed-line"></div>
+
+      <!-- Receipt Body -->
+      <div class="receipt-body">
+        <div class="receipt-row">
+          <span class="row-label">Transaction ID</span>
+          <span class="row-val font-mono">{{ transaction.id }}</span>
+        </div>
+        
+        <div class="receipt-row">
+          <span class="row-label">Date & Time</span>
+          <span class="row-val">{{ transaction.timestamp | date:'MMMM d, y, h:mm:ss a' }}</span>
+        </div>
+
+        <div class="receipt-row">
+          <span class="row-label">Account Name</span>
+          <span class="row-val">{{ account.name }}</span>
+        </div>
+
+        <div class="receipt-row">
+          <span class="row-label">Currency</span>
+          <span class="row-val">{{ transaction.currency }}</span>
+        </div>
+
+        <div class="receipt-row">
+          <span class="row-label">Balance After</span>
+          <span class="row-val">{{ getCurrencySymbol(account.currency) }}{{ transaction.balanceAfter | number:'1.2-2' }}</span>
+        </div>
+
+        <div class="receipt-row">
+          <span class="row-label">Description</span>
+          <span class="row-val desc-val">{{ transaction.description }}</span>
+        </div>
+      </div>
+
+      <!-- Dashed Separator -->
+      <div class="dashed-line"></div>
+
+      <!-- PDF Download Button -->
+      <div class="receipt-actions">
+        <button class="btn btn-primary btn-block" (click)="downloadPdf()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          Download PDF Receipt
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
